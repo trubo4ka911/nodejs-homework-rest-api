@@ -1,6 +1,7 @@
 const { createError } = require("../../helpers");
 const { User, JoiSchema } = require("../../models/user");
 const bcrypt = require("bcryptjs");
+const gravatar = require("gravatar");
 
 const register = async (req, res, next) => {
   const { email, password } = req.body;
@@ -10,14 +11,12 @@ const register = async (req, res, next) => {
     throw createError(400, "Ошибка от Joi или другой библиотеки валидации");
   }
   const result = await User.findOne({ email });
-  if (!result) {
-    throw createError(401, "Email or password is wrong");
-  }
   if (result) {
     throw createError(409, "Email in use");
   }
   const pass = await bcrypt.hash(password, 10);
-  await User.create({ email, password: pass });
+  const avatarURL = gravatar.url(email);
+  await User.create({ email, password: pass, avatarURL });
   res.status(201).json({
     users: {
       email,
