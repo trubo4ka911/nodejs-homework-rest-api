@@ -1,5 +1,5 @@
 const { createError } = require("../../helpers");
-const { User, JoiSchema } = require("../../models/user");
+const { User, JoiSchema } = require("../../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -21,6 +21,9 @@ const login = async (req, res, next) => {
 
   if (!compare) {
     throw createError(401, "Email or password is wrong");
+  }
+  if (!result.verify) {
+    throw createError(401, "Email not verify");
   }
   const payload = {
     id: result._id,

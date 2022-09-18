@@ -1,4 +1,4 @@
-const { Contact, schemas } = require("../../models/contacts");
+const { Contact, schemas } = require("../../models/Contacts");
 const { createError } = require("../../helpers");
 const { isValidObjectId } = require("mongoose");
 
